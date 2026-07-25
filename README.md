@@ -223,6 +223,15 @@ When exporting using --format json, the resulting combined.json contains an arra
 ]
 ```
 
+### Sync Full Market Data (pse sync)
+Scrapes all companies, downloads price history, and outputs consolidated files:
+
+Bash
+# Export as combined JSON dataset
+```pse sync --format json```
+
+# Sync specific symbols with a custom start date
+```pse sync --symbols BDO,ALI,TEL --from 2026-01-01 --format json```
 
 
 
