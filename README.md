@@ -226,7 +226,6 @@ When exporting using --format json, the resulting combined.json contains an arra
 ### Sync Full Market Data (pse sync)
 Scrapes all companies, downloads price history, and outputs consolidated files:
 
-Bash
 # Export as combined JSON dataset
 ```pse sync --format json```
 
