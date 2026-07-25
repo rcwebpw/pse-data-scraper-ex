@@ -1,8 +1,7 @@
 import logging
-import os
 from pathlib import Path
 import pandas as pd
-from pse_data_scraper.pipeline import export_prices
+from pse_data_scraper.combiner import combine_csvs
 
 
 def export_dataset(
@@ -13,9 +12,9 @@ def export_dataset(
     """
     combined_csv = Path(combined_path)
 
-    # 1. Combine individual ticker CSVs in history_dir into the target combined CSV
+    # 1. Combine individual ticker CSVs in history_dir into target combined CSV
     logging.info("Combining historical CSVs from %s...", history_dir)
-    export_prices(history_dir, str(combined_csv))
+    combine_csvs(history_dir, str(combined_csv))
 
     if not combined_csv.exists():
         logging.error("Failed to generate combined dataset at %s", combined_csv)
@@ -28,7 +27,7 @@ def export_dataset(
         json_path = combined_csv.with_suffix(".json")
         df = pd.read_csv(combined_csv)
 
-        # Output as clean JSON array: [{"Date": "2026-07-24", "Close": 142.5}, ...]
+        # Output as clean JSON array of objects
         df.to_json(json_path, orient="records", indent=2, date_format="iso")
         print(f"Successfully exported JSON to: {json_path}")
 

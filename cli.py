@@ -175,6 +175,7 @@ def handle_prices(args) -> None:
         max_companies=cfg.max_companies,
         cache_dir=str(cfg.cache_dir) if cfg.cache_dir else None,
         refresh=getattr(args, "refresh", False),
+        output_format=getattr(args, "format", "csv"),
     )
 
 
@@ -204,6 +205,7 @@ def handle_sync(args) -> None:
         cache_dir=str(cfg.cache_dir) if cfg.cache_dir else None,
         refresh=getattr(args, "refresh", False),
         max_pages=getattr(args, "max_pages", None),
+        export_format=getattr(args, "format", "csv"),
     )
 
 
@@ -253,6 +255,13 @@ def build_parser() -> argparse.ArgumentParser:
     sync_parser.add_argument("--max-companies", type=int, help="Limit number of companies")
     sync_parser.add_argument("--max-pages", type=int, help="Limit number of company pages")
     sync_parser.add_argument("--refresh", action="store_true", help="Refresh companies and prices")
+    sync_parser.add_argument(
+        "--format",
+        "-f",
+        choices=["csv", "json"],
+        default="csv",
+        help="Output format for combined dataset (csv or json)",
+    )
     sync_parser.set_defaults(func=handle_sync)
 
     companies_parser = subparsers.add_parser("companies", help="Refresh or list companies")
@@ -289,6 +298,13 @@ def build_parser() -> argparse.ArgumentParser:
     prices_parser.add_argument("--max-companies", type=int, help="Limit number of companies")
     prices_parser.add_argument("--max-pages", type=int, help="Limit number of company pages")
     prices_parser.add_argument("--refresh", action="store_true", help="Refresh companies and prices")
+    prices_parser.add_argument(
+        "--format",
+        "-f",
+        choices=["csv", "json"],
+        default="csv",
+        help="Output format for individual stock files (csv or json)",
+    )
     prices_parser.set_defaults(func=handle_prices)
 
     export_parser = subparsers.add_parser("export", help="Export combined dataset")
