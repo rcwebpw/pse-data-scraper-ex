@@ -147,6 +147,85 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
+# API & CLI Reference
+
+## Dataset Exporter (`pse_data_scraper.exporter`)
+
+The `exporter` module handles consolidation of individual ticker CSVs in the history directory and outputs structured market datasets in either CSV or JSON formats.
+
+### `export_dataset()`
+
+```python
+from pse_data_scraper.exporter import export_dataset
+
+export_dataset(
+    history_dir: str, 
+    combined_path: str, 
+    export_format: str = "csv"
+) -> None
+```
+
+
+### Extended
+
+### Parameters
+history_dir (str): Path to the directory containing individual ticker CSV files (e.g., "data/history").
+
+combined_path (str): Destination file path for the combined output file (e.g., "data/combined.csv").
+
+export_format (str, optional): Desired output file format. Accepted values are "csv" or "json". Defaults to "csv".
+
+### Output Behavior
+- CSV: Combines all individual stock data into combined_path (e.g., data/combined.csv).
+
+- JSON: Generates the base dataset first, then creates a matching JSON array file using the .json extension (e.g., data/combined.json).
+
+CLI Command Reference
+```pse export```
+Consolidates all downloaded stock price files into a single, unified dataset file.
+
+### Usage Examples
+Export as consolidated CSV:
+
+```pse export --format csv```
+
+Export as structured JSON array:
+
+```pse export --format json```
+
+### JSON Output Schema
+When exporting using --format json, the resulting combined.json contains an array of normalized daily trading objects:
+
+```
+[
+  {
+    "Symbol": "BDO",
+    "Company": "Banco de Oro Unibank, Inc.",
+    "Date": "2026-07-24",
+    "Open": 141.00,
+    "High": 143.20,
+    "Low": 140.50,
+    "Close": 142.50,
+    "Volume": 2154300,
+    "Value": 306232150.00
+  },
+  {
+    "Symbol": "ALI",
+    "Company": "Ayala Land, Inc.",
+    "Date": "2026-07-24",
+    "Open": 29.50,
+    "High": 30.10,
+    "Low": 29.20,
+    "Close": 29.80,
+    "Volume": 5421000,
+    "Value": 161245800.00
+  }
+]
+```
+
+
+
+
 ## License
 
 MIT. See `LICENSE`.
